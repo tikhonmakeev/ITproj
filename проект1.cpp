@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream>//ПЕРЕДЕЛАТЬ
 #include <string>
 using namespace std;
 string magick(element_1,element_2){
