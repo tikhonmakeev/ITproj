@@ -16,6 +16,8 @@ string magick(element_1,element_2){
     }
 }
 int main() {
+
+    
     string element_1 = "water";
     string element_2 = "fire";
     magick(element_1, element_2);
