@@ -13,7 +13,7 @@ class gg {
         int hp;
         bool isDry;
         bool isFlaming;
-        bool isBloking;
+        bool isBlocking;
 };
 class orc{
     public:
