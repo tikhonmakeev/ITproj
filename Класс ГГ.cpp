@@ -3,13 +3,13 @@ using namespace std;
 class gg {
     public:
         int changeHp(int value){
-            ggHp = value;
+            hp = value;
         }
         int getHp(){
-            return ggHp;
+            return hp;
         }
     private:
-        int ggHp;
+        int hp;
         bool isDry;
         bool isFlaming;
         
