@@ -3,17 +3,18 @@
 using namespace std;
 class gg {
     public:
-        int changeHp(int value){
+        int setHp(int value){
             hp = value;
+            return hp;
         }
         int getHp(){
             return hp;
         }
-    private:
-        int hp;
         bool isDry;
         bool isFlaming;
         bool isBlocking;
+    private:
+        int hp;
 };
 class orc{
     public:
@@ -35,7 +36,7 @@ int main()
     Smorch.setHp(500);
     while(Kolyan.getHp()>0 & Smorch.getHp()>0){
         int damage = rand()%20;
-        if (isBlocking){
+        if (Kolyan.isBlocking){
             cout<<"Вы заблокировали удар("<<damage<<" урона)."<<endl;
         }
         else{
