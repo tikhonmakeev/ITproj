@@ -1,17 +1,19 @@
 #include <iostream>
 #include <string>
 using namespace std;
-class human{
+class gg {
     public:
-        int setHp(int value){
-            hp=value;
-            return hp;
+        int changeHp(int value){
+            hp = value;
         }
         int getHp(){
             return hp;
         }
     private:
         int hp;
+        bool isDry;
+        bool isFlaming;
+        
 };
 class orc{
     public:
@@ -27,7 +29,7 @@ class orc{
 };
 int main()
 {
-    human Kolyan;
+    gg Kolyan;
     Kolyan.setHp(100);
     orc Smorch;
     Smorch.setHp(500);
