@@ -13,9 +13,6 @@ string magick(element_1,element_2){
     if (element_1 = "water" and element_2 = "earth"){ 
         return "dirt";
     }
-    if (element_1 = "water" and element_2 = "fire"){
-        return "steam";
-    }
 }
 int main() {
 
