@@ -37,10 +37,10 @@ public:
         	return speed;
         };
         int setPosX(int value){
-		posX += value
+		posX += value;
 	};
 	int setPosY(int value){
-		posY += value
+		posY += value;
 	};
 private:
 	int radius = 20;
