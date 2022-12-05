@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "vector2.hpp"
+//#include "vector2.hpp"
 using namespace sf;
 using namespace std;
 class Fire {
