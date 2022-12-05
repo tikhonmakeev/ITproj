@@ -69,19 +69,20 @@ int main() {
 
 		if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
 			f.move(-(f1.getSpeed()) * elapsed / 1000, 0);
-			f1.setPosX(-(f1.getSpeed()) * elapsed / 1000)
-		}
+			f1.setPosX(-(f1.getSpeed()) * elapsed / 1000);
+		};
 		if (Keyboard::isKeyPressed(Keyboard::Key::D)) {
 			f.move(f1.getSpeed() * elapsed / 1000, 0);
-		}
+			f1.setPosX(f1.getSpeed() * elapsed / 1000);
+		};
 		if (Keyboard::isKeyPressed(Keyboard::Key::W)) {
 			f.move(0,-(f1.getSpeed()) * elapsed / 1000);
-			f1.setPosY(-(f1.getSpeed()) * elapsed / 1000)
-		}
+			f1.setPosY(-(f1.getSpeed()) * elapsed / 1000);
+		};
 		if (Keyboard::isKeyPressed(Keyboard::Key::S)) {
 			f.move(0,f1.getSpeed() * elapsed / 1000);
-			f1.setPosY(f1.getSpeed() * elapsed / 1000)
-		}
+			f1.setPosY(f1.getSpeed() * elapsed / 1000);
+		};
 		window.clear();
 
 		window.draw(f);
