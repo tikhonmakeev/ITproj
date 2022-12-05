@@ -55,6 +55,20 @@ int main() {
 			if (event.type == sf::Event::Closed or Keyboard::isKeyPressed(Keyboard::Key::F4))
 				window.close();
 		}
+		float elapsed = clock.restart().asMilliseconds();
+
+		if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
+			shape.move(-speed * elapsed / 1000, 0);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Key::D)) {
+			shape.move(speed * elapsed / 1000, 0);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Key::W)) {
+			shape.move(0,-speed * elapsed / 1000);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Key::S)) {
+			shape.move(0,speed * elapsed / 1000);
+		}
 		window.clear();
 
 
