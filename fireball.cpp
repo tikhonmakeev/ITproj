@@ -33,6 +33,9 @@ public:
         int getPosY(){
         		return posY;
         };
+        int getSpeed(){
+        	return speed;
+        };
         
 private:
 	int radius = 20;
@@ -51,6 +54,7 @@ int main() {
 	{
 		Event event;
 		Fireball f1(200, 200);
+		CircleShape f=f1.draw(f1.getPosX(), f1.getPosY());
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed or Keyboard::isKeyPressed(Keyboard::Key::F4))
@@ -59,22 +63,20 @@ int main() {
 		float elapsed = clock.restart().asMilliseconds();
 
 		if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
-			f1.move(-speed * elapsed / 1000, 0);
+			f.move(-(f1.getSpeed()) * elapsed / 1000, 0);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Key::D)) {
-			f1.move(speed * elapsed / 1000, 0);
+			f.move(f1.getSpeed() * elapsed / 1000, 0);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Key::W)) {
-			f1.move(0,-speed * elapsed / 1000);
+			f.move(0,-(f1.getSpeed()) * elapsed / 1000);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Key::S)) {
-			f1.move(0,speed * elapsed / 1000);
+			f.move(0,f1.getSpeed() * elapsed / 1000);
 		}
 		window.clear();
 
-
-		
-		window.draw(f1.draw(f1.getPosX(), f1.getPosY()));
+		window.draw(f);
 		window.display();
 	}
 	return 0;
