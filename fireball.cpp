@@ -49,7 +49,8 @@ int main() {
 	Clock clock;
 	while (window.isOpen())
 	{
-		sf::Event event;
+		Event event;
+		Fireball f1(200, 200);
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed or Keyboard::isKeyPressed(Keyboard::Key::F4))
@@ -58,21 +59,21 @@ int main() {
 		float elapsed = clock.restart().asMilliseconds();
 
 		if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
-			shape.move(-speed * elapsed / 1000, 0);
+			f1.move(-speed * elapsed / 1000, 0);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Key::D)) {
-			shape.move(speed * elapsed / 1000, 0);
+			f1.move(speed * elapsed / 1000, 0);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Key::W)) {
-			shape.move(0,-speed * elapsed / 1000);
+			f1.move(0,-speed * elapsed / 1000);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Key::S)) {
-			shape.move(0,speed * elapsed / 1000);
+			f1.move(0,speed * elapsed / 1000);
 		}
 		window.clear();
 
 
-		Fireball f1(200, 200);
+		
 		window.draw(f1.draw(f1.getPosX(), f1.getPosY()));
 		window.display();
 	}
