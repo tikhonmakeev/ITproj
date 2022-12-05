@@ -36,10 +36,10 @@ public:
         int getSpeed(){
         	return speed;
         };
-        int setPosX(value){
+        int setPosX(int value){
 		posX += value
 	};
-	int setPosY(value){
+	int setPosY(int value){
 		posY += value
 	};
 private:
