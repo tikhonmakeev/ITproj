@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include "vector2.hpp"
 using namespace sf;
 using namespace std;
 class Fire {
@@ -11,35 +12,39 @@ public:
 protected:
 	int dmgpersec = 5;
 };
-class Fireball :public Fire {
+class Fireball : public Fire {
 public:
 	Fireball(int x, int y) {
-	        int posX = x;
-                int posY = y;	
+	        posX = x;
+	        posY = y;
+	        
 	};
         CircleShape draw(int x, int y){
-                fb = CircleShape(x, y);
-		fb.setPosition(x, y);
-		fb.setRadius(radius);
-		fb.setFillColor(Color(255,123,0));
-		fb.setOrigin(radius, radius);
+                CircleShape fb(x, y);
+				fb.setPosition(x, y);
+				fb.setRadius(radius);
+				fb.setFillColor(Color(255,123,0));
+				fb.setOrigin(radius, radius);
                 return fb;
         };
-        CircleShape draw(){
-                fb = CircleShape(Fireball.x, Fireball.y);
-		fb.setPosition(Fireball.x, Fireball.y);
-		fb.setRadius(Fireball.radius);
-		fb.setFillColor(Color(255,123,0));
-		fb.setOrigin(Fireball.radius, Fireball.radius);
-                return fb;
+        int getPosX(){
+        		return posX;
         };
+        int getPosY(){
+        		return posY;
+        };
+        
 private:
-	int radius = 30;
+	int radius = 20;
 	int speed = 100;
+	float timeSpawned = 0;
+	int posX;
+	int posY;
+	Vector2f _motion;
 };
 int main() {
-	RenderWindow window(sf::VideoMode(900, 900), "magicka", Style::None);
-	class RenderWindow &win = window;
+	RenderWindow window(sf::VideoMode(600, 600), "magicka", Style::None);
+	//class RenderWindow &win = window;
 	window.setFramerateLimit(60);
 	Clock clock;
 	while (window.isOpen())
@@ -53,8 +58,8 @@ int main() {
 		window.clear();
 
 
-		Fireball f1(30, 30);
-		window.draw(f1.draw(f1.posX,f1.posY));
+		Fireball f1(200, 200);
+		window.draw(f1.draw(f1.getPosX(), f1.getPosY()));
 		window.display();
 	}
 	return 0;
