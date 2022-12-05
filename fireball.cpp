@@ -11,16 +11,28 @@ public:
 protected:
 	int dmgpersec = 5;
 };
-class createFireball :public Fire {
+class Fireball :public Fire {
 public:
-	CircleShape *fb;
-	createFireball(int x, int y) {
-		fb = new CircleShape(x, y);
+	Fireball(int x, int y) {
+	        int posX = x;
+                int posY = y;	
+	};
+        CircleShape draw(int x, int y){
+                fb = CircleShape(x, y);
 		fb.setPosition(x, y);
 		fb.setRadius(radius);
 		fb.setFillColor(Color(255,123,0));
 		fb.setOrigin(radius, radius);
-	};
+                return fb;
+        };
+        CircleShape draw(){
+                fb = CircleShape(Fireball.x, Fireball.y);
+		fb.setPosition(Fireball.x, Fireball.y);
+		fb.setRadius(Fireball.radius);
+		fb.setFillColor(Color(255,123,0));
+		fb.setOrigin(Fireball.radius, Fireball.radius);
+                return fb;
+        };
 private:
 	int radius = 30;
 	int speed = 100;
@@ -38,9 +50,11 @@ int main() {
 			if (event.type == sf::Event::Closed or Keyboard::isKeyPressed(Keyboard::Key::F4))
 				window.close();
 		}
-		Fireball f1(30, 30);
-		window.draw(f1.fireball);
 		window.clear();
+
+
+		Fireball f1(30, 30);
+		window.draw(f1.draw(f1.posX,f1.posY));
 		window.display();
 	}
 	return 0;
