@@ -36,7 +36,12 @@ public:
         int getSpeed(){
         	return speed;
         };
-        
+        int setPosX(value){
+		posX += value
+	};
+	int setPosY(value){
+		posY += value
+	};
 private:
 	int radius = 20;
 	int speed = 100;
@@ -64,15 +69,18 @@ int main() {
 
 		if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
 			f.move(-(f1.getSpeed()) * elapsed / 1000, 0);
+			f1.setPosX(-(f1.getSpeed()) * elapsed / 1000)
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Key::D)) {
 			f.move(f1.getSpeed() * elapsed / 1000, 0);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Key::W)) {
 			f.move(0,-(f1.getSpeed()) * elapsed / 1000);
+			f1.setPosY(-(f1.getSpeed()) * elapsed / 1000)
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Key::S)) {
 			f.move(0,f1.getSpeed() * elapsed / 1000);
+			f1.setPosY(f1.getSpeed() * elapsed / 1000)
 		}
 		window.clear();
 
