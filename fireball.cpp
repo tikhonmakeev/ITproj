@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
-//#include "vector2.hpp"
+#include "vector2.hpp"
 using namespace sf;
 using namespace std;
 class Fire {
@@ -17,30 +17,31 @@ public:
 	Fireball(int x, int y) {
 	        posX = x;
 	        posY = y;
-	        
 	};
-        CircleShape draw(int x, int y){
-                CircleShape fb(x, y);
-				fb.setPosition(x, y);
-				fb.setRadius(radius);
-				fb.setFillColor(Color(255,123,0));
-				fb.setOrigin(radius, radius);
-                return fb;
-        };
-        int getPosX(){
-        		return posX;
-        };
-        int getPosY(){
-        		return posY;
-        };
-        int getSpeed(){
-        	return speed;
-        };
-        int setPosX(int value){
-		posX += value;
+	vector <CircleShape> fbs;
+	CircleShape draw(int x, int y, vector <CircleShape> fbs){
+		fbs.push_back(CircleShape(x, y));
+		fbs[0].setPosition(x, y);
+		fbs[0].setRadius(radius);
+		fbs[0].setFillColor(Color(255,123,0));
+		fbs[0].setRotation(0);
+		fbs[0].setOrigin(radius, radius);
+        return fbs[0];
 	};
-	int setPosY(int value){
-		posY += value;
+    int getPosX(){
+        return posX;
+    };
+    int getPosY(){
+        return posY;
+    };
+    int getSpeed(){
+		return speed;
+    };
+    void setPosX(int value){
+		posX = value;
+	};
+	void setPosY(int value){
+		posY = value;
 	};
 private:
 	int radius = 20;
@@ -51,42 +52,36 @@ private:
 	Vector2f _motion;
 };
 int main() {
-	RenderWindow window(sf::VideoMode(600, 600), "magicka", Style::None);
+	RenderWindow window(VideoMode(600, 600), "magicka", Style::None);
 	//class RenderWindow &win = window;
 	window.setFramerateLimit(60);
 	Clock clock;
+	Event event;
+	int a = 0;
+	vector <Fireball> fbsss;
 	while (window.isOpen())
 	{
-		Event event;
-		Fireball f1(200, 200);
-		CircleShape f=f1.draw(f1.getPosX(), f1.getPosY());
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed or Keyboard::isKeyPressed(Keyboard::Key::F4))
+			if (event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Key::Escape))
 				window.close();
 		}
-		float elapsed = clock.restart().asMilliseconds();
+		if (Keyboard::isKeyPressed(Keyboard::Key::Space) and a == 0) {
+			fbsss.push_back(Fireball(200, 200));
+			fbsss[0].draw(fbsss[0].getPosX(), fbsss[0].getPosY(), fbsss[0].fbs);
+			a = 1;
+		};
+		if (a == 1) {
+			float elapsed = clock.restart().asMilliseconds();
+			//√ƒе то используетс€ back на пустой вектор
+			if (Keyboard::isKeyPressed(Keyboard::Key::W)) {
+				fbsss[0].fbs[0].move(fbsss[0].getSpeed() * elapsed / 1000 * cos(fbsss[0].fbs[0].getRotation()), fbsss[0].getSpeed() * elapsed / 1000 * sin(fbsss[0].fbs[0].getRotation()));
+			};
+			window.clear();
 
-		if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
-			f.move(-(f1.getSpeed()) * elapsed / 1000, 0);
-			f1.setPosX(-(f1.getSpeed()) * elapsed / 1000);
+			window.draw(fbsss[0].fbs[0]);
+			window.display();
 		};
-		if (Keyboard::isKeyPressed(Keyboard::Key::D)) {
-			f.move(f1.getSpeed() * elapsed / 1000, 0);
-			f1.setPosX(f1.getSpeed() * elapsed / 1000);
-		};
-		if (Keyboard::isKeyPressed(Keyboard::Key::W)) {
-			f.move(0,-(f1.getSpeed()) * elapsed / 1000);
-			f1.setPosY(-(f1.getSpeed()) * elapsed / 1000);
-		};
-		if (Keyboard::isKeyPressed(Keyboard::Key::S)) {
-			f.move(0,f1.getSpeed() * elapsed / 1000);
-			f1.setPosY(f1.getSpeed() * elapsed / 1000);
-		};
-		window.clear();
-
-		window.draw(f);
-		window.display();
-	}
+	};
 	return 0;
 }
