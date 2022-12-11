@@ -122,7 +122,7 @@ public:
 };
 class Spell {
 public:
-	float dx, dy, x, y, speed= 20;
+	float dx, dy, x, y, speed= 10;
 	int w, h;
 	bool isBurning = false;
 	string name;
@@ -211,7 +211,7 @@ int main() {
 			a = 1;
 		}
 		if (a == 1) {
-			fireball.update(time);
+			//fireball.update(time);
 
 			window.clear();
 
