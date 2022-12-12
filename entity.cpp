@@ -22,16 +22,16 @@ public:
 };
 class Player :public Entity {
 public:
-	enum { left, right, up, down, stay } state;//состояния объекта
+	enum { left, right, up, down, stay } state;//Г±Г®Г±ГІГ®ГїГ­ГЁГї Г®ГЎГєГҐГЄГІГ 
 
 	Player(Image& image, float X, float Y, int W, int H, String Name) :Entity(image, X, Y, W, H, Name) {
-		if (name == "вставить имя") {
-			//sprite.setTextureRect(IntRect(, w, h));добавить текстуру
+		if (name == "ГўГ±ГІГ ГўГЁГІГј ГЁГ¬Гї") {
+			//sprite.setTextureRect(IntRect(, w, h));Г¤Г®ГЎГ ГўГЁГІГј ГІГҐГЄГ±ГІГіГ°Гі
 		}
 	}
 
 	void control() {
-		if (Keyboard::isKeyPressed) {//класс проверки нажатия клавиш управления
+		if (Keyboard::isKeyPressed) {//ГЄГ«Г Г±Г± ГЇГ°Г®ГўГҐГ°ГЄГЁ Г­Г Г¦Г ГІГЁГї ГЄГ«Г ГўГЁГё ГіГЇГ°Г ГўГ«ГҐГ­ГЁГї
 			if (Keyboard::isKeyPressed(Keyboard::Left)) {
 				state = left; speed = speed;
 			}
@@ -49,40 +49,40 @@ public:
 		}
 	}
 
-	void checkCollisionWithMap(float Dx, float Dy)//ф ция проверки столкновений с картой
+	void checkCollisionWithMap(float Dx, float Dy)//Гґ Г¶ГЁГї ГЇГ°Г®ГўГҐГ°ГЄГЁ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГ© Г± ГЄГ Г°ГІГ®Г©
 	{
-		/**for ()//проходимся по элементам карты
+		/**for ()//ГЇГ°Г®ГµГ®Г¤ГЁГ¬Г±Гї ГЇГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ Г¬ ГЄГ Г°ГІГ»
 			for ()
 			{
 				if (Map[i][j] == '1')
 				{
-					if (Dy > 0) {}//по Y вниз=>идем в пол(стоим на месте).
-					if (Dy < 0) {}//столкновение с верхними краями карты
-					if (Dx > 0) {}//с правым краем карты
-					if (Dx < 0) {}// с левым краем карты
+					if (Dy > 0) {}//ГЇГ® Y ГўГ­ГЁГ§=>ГЁГ¤ГҐГ¬ Гў ГЇГ®Г«(Г±ГІГ®ГЁГ¬ Г­Г  Г¬ГҐГ±ГІГҐ).
+					if (Dy < 0) {}//Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГҐ Г± ГўГҐГ°ГµГ­ГЁГ¬ГЁ ГЄГ°Г ГїГ¬ГЁ ГЄГ Г°ГІГ»
+					if (Dx > 0) {}//Г± ГЇГ°Г ГўГ»Г¬ ГЄГ°Г ГҐГ¬ ГЄГ Г°ГІГ»
+					if (Dx < 0) {}// Г± Г«ГҐГўГ»Г¬ ГЄГ°Г ГҐГ¬ ГЄГ Г°ГІГ»
 				}
 			}
 	*/
 	};
 	void update(float time)
 	{
-		control();//функция управления персонажем
-		switch (state)//тут делаются различные действия в зависимости от состояния
+		control();//ГґГіГ­ГЄГ¶ГЁГї ГіГЇГ°Г ГўГ«ГҐГ­ГЁГї ГЇГҐГ°Г±Г®Г­Г Г¦ГҐГ¬
+		switch (state)//ГІГіГІ Г¤ГҐГ«Г ГѕГІГ±Гї Г°Г Г§Г«ГЁГ·Г­Г»ГҐ Г¤ГҐГ©Г±ГІГўГЁГї Гў Г§Г ГўГЁГ±ГЁГ¬Г®Г±ГІГЁ Г®ГІ Г±Г®Г±ГІГ®ГїГ­ГЁГї
 		{
-		case right:dx = speed; break;//состояние идти вправо
-		case left:dx = -speed; break;//состояние идти влево
+		case right:dx = speed; break;//Г±Г®Г±ГІГ®ГїГ­ГЁГҐ ГЁГ¤ГІГЁ ГўГЇГ°Г ГўГ®
+		case left:dx = -speed; break;//Г±Г®Г±ГІГ®ГїГ­ГЁГҐ ГЁГ¤ГІГЁ ГўГ«ГҐГўГ®
 		case up: dy = speed; break;
 		case down: dy = -speed; break;
 		case stay: break;		
 		}
 		x += dx * time;
-		checkCollisionWithMap(dx, 0);//обрабатываем столкновение по Х
+		checkCollisionWithMap(dx, 0);//Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГ¬ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГҐ ГЇГ® Г•
 		y += dy * time;
-		checkCollisionWithMap(0, dy);//обрабатываем столкновение по Y
-		sprite.setPosition(x + w / 2, y + h / 2); //задаем позицию спрайта в место его центра
+		checkCollisionWithMap(0, dy);//Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГ¬ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГҐ ГЇГ® Y
+		sprite.setPosition(x + w / 2, y + h / 2); //Г§Г Г¤Г ГҐГ¬ ГЇГ®Г§ГЁГ¶ГЁГѕ Г±ГЇГ°Г Г©ГІГ  Гў Г¬ГҐГ±ГІГ® ГҐГЈГ® Г¶ГҐГ­ГІГ°Г 
 		if (health <= 0) { life = false; }
 		if (!isMove) { speed = 0; }
-		//if (life) { setPlayerCoordinateForView(x, y); } можно добавить, чтоб камера не всегда была над персонажем
+		//if (life) { setPlayerCoordinateForView(x, y); } Г¬Г®Г¦Г­Г® Г¤Г®ГЎГ ГўГЁГІГј, Г·ГІГ®ГЎ ГЄГ Г¬ГҐГ°Г  Г­ГҐ ГўГ±ГҐГЈГ¤Г  ГЎГ»Г«Г  Г­Г Г¤ ГЇГҐГ°Г±Г®Г­Г Г¦ГҐГ¬
 	}
 };
 class Enemy :public Entity {
@@ -90,20 +90,20 @@ public:
 	Enemy(Image& image, float X, float Y, int W, int H, String Name) :Entity(image, X, Y, W, H, Name) {
 		if (name == "EasyEnemy") {
 			sprite.setTextureRect(IntRect(0, 0, w, h));
-			dx = 0.1;//пусть этот монстр всегда двигается
+			dx = 0.1;//ГЇГіГ±ГІГј ГЅГІГ®ГІ Г¬Г®Г­Г±ГІГ° ГўГ±ГҐГЈГ¤Г  Г¤ГўГЁГЈГ ГҐГІГ±Гї
 		}
 	}
 	void checkCollisionWithMap(float Dx, float Dy)
 	{
 		for (int i = y / 32; i < (y + h) / 32; i++)
 			for (int j = x / 32; j < (x + w) / 32; j++)
-			{//здесь реализован враг, меняющий направление после касания стены, нам такое не оч подходит
-				/*if (TileMap[i][j] == '0')//если элемент наш тайлик земли, то
+			{//Г§Г¤ГҐГ±Гј Г°ГҐГ Г«ГЁГ§Г®ГўГ Г­ ГўГ°Г ГЈ, Г¬ГҐГ­ГїГѕГ№ГЁГ© Г­Г ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ ГЇГ®Г±Г«ГҐ ГЄГ Г±Г Г­ГЁГї Г±ГІГҐГ­Г», Г­Г Г¬ ГІГ ГЄГ®ГҐ Г­ГҐ Г®Г· ГЇГ®Г¤ГµГ®Г¤ГЁГІ
+				/*if (TileMap[i][j] == '0')//ГҐГ±Г«ГЁ ГЅГ«ГҐГ¬ГҐГ­ГІ Г­Г Гё ГІГ Г©Г«ГЁГЄ Г§ГҐГ¬Г«ГЁ, ГІГ®
 				{
-					if (Dy > 0) { y = i * 32 - h; }//по Y вниз=>идем в пол(стоим на месте) или падаем. В этот момент надо вытолкнуть персонажа и поставить его на землю, при этом говорим что мы на земле тем самым снова можем прыгать
-					if (Dy < 0) { y = i * 32 + 32; }//столкновение с верхними краями карты(может и не пригодиться)
-					if (Dx > 0) { x = j * 32 - w; dx = -0.1; sprite.scale(-1, 1); }//с правым краем карты
-					if (Dx < 0) { x = j * 32 + 32; dx = 0.1; sprite.scale(-1, 1); }// с левым краем карты
+					if (Dy > 0) { y = i * 32 - h; }//ГЇГ® Y ГўГ­ГЁГ§=>ГЁГ¤ГҐГ¬ Гў ГЇГ®Г«(Г±ГІГ®ГЁГ¬ Г­Г  Г¬ГҐГ±ГІГҐ) ГЁГ«ГЁ ГЇГ Г¤Г ГҐГ¬. Г‚ ГЅГІГ®ГІ Г¬Г®Г¬ГҐГ­ГІ Г­Г Г¤Г® ГўГ»ГІГ®Г«ГЄГ­ГіГІГј ГЇГҐГ°Г±Г®Г­Г Г¦Г  ГЁ ГЇГ®Г±ГІГ ГўГЁГІГј ГҐГЈГ® Г­Г  Г§ГҐГ¬Г«Гѕ, ГЇГ°ГЁ ГЅГІГ®Г¬ ГЈГ®ГўГ®Г°ГЁГ¬ Г·ГІГ® Г¬Г» Г­Г  Г§ГҐГ¬Г«ГҐ ГІГҐГ¬ Г±Г Г¬Г»Г¬ Г±Г­Г®ГўГ  Г¬Г®Г¦ГҐГ¬ ГЇГ°Г»ГЈГ ГІГј
+					if (Dy < 0) { y = i * 32 + 32; }//Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГҐ Г± ГўГҐГ°ГµГ­ГЁГ¬ГЁ ГЄГ°Г ГїГ¬ГЁ ГЄГ Г°ГІГ»(Г¬Г®Г¦ГҐГІ ГЁ Г­ГҐ ГЇГ°ГЁГЈГ®Г¤ГЁГІГјГ±Гї)
+					if (Dx > 0) { x = j * 32 - w; dx = -0.1; sprite.scale(-1, 1); }//Г± ГЇГ°Г ГўГ»Г¬ ГЄГ°Г ГҐГ¬ ГЄГ Г°ГІГ»
+					if (Dx < 0) { x = j * 32 + 32; dx = 0.1; sprite.scale(-1, 1); }// Г± Г«ГҐГўГ»Г¬ ГЄГ°Г ГҐГ¬ ГЄГ Г°ГІГ»
 				}
 			}
 		*/
@@ -111,11 +111,11 @@ public:
 	};
 	void update(float time)
 	{
-		if (name == "EasyEnemy") {//создать легкого бота
-			//moveTimer += time;if (moveTimer>3000){ dx *= -1; moveTimer = 0; }//меняет направление примерно каждые 3 сек
+		if (name == "EasyEnemy") {//Г±Г®Г§Г¤Г ГІГј Г«ГҐГЈГЄГ®ГЈГ® ГЎГ®ГІГ 
+			//moveTimer += time;if (moveTimer>3000){ dx *= -1; moveTimer = 0; }//Г¬ГҐГ­ГїГҐГІ Г­Г ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ ГЇГ°ГЁГ¬ГҐГ°Г­Г® ГЄГ Г¦Г¤Г»ГҐ 3 Г±ГҐГЄ
 			checkCollisionWithMap(dx, 0);
 			x += dx * time;
-			sprite.setPosition(x + w / 2, y + h / 2); //задаем позицию спрайта в место его центра
+			sprite.setPosition(x + w / 2, y + h / 2); //Г§Г Г¤Г ГҐГ¬ ГЇГ®Г§ГЁГ¶ГЁГѕ Г±ГЇГ°Г Г©ГІГ  Гў Г¬ГҐГ±ГІГ® ГҐГЈГ® Г¶ГҐГ­ГІГ°Г 
 			if (health <= 0) { life = false; }
 		}
 	}
@@ -140,7 +140,7 @@ public:
 			texture.loadFromImage(image);
 			sprite.setPosition(x, y);
 			sprite.setTexture(texture);
-			sprite.setOrigin(w / 6, h / 6);
+			sprite.setOrigin(w / 12, h / 2);
 			sprite.scale(0.2f, 0.2f);
 			sprite.setTextureRect(IntRect(0, 0, w/6, h));
 			sprite.setRotation(angle);
@@ -151,17 +151,17 @@ public:
 		float burnTimer = time;
 		if (time - burnTimer > duration) { isBurning = false; }
 	};
-	void checkCollisionWithMap(float Dx, float Dy)//ф ция проверки столкновений с картой
+	void checkCollisionWithMap(float Dx, float Dy)//Гґ Г¶ГЁГї ГЇГ°Г®ГўГҐГ°ГЄГЁ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГ© Г± ГЄГ Г°ГІГ®Г©
 	{
-		/**for ()//проходимся по элементам карты
+		/**for ()//ГЇГ°Г®ГµГ®Г¤ГЁГ¬Г±Гї ГЇГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ Г¬ ГЄГ Г°ГІГ»
 			for ()
 			{
 				if (Map[i][j] == '1')
 				{
-					if (Dy > 0) {}//по Y вниз=>идем в пол(стоим на месте).
-					if (Dy < 0) {}//столкновение с верхними краями карты
-					if (Dx > 0) {}//с правым краем карты
-					if (Dx < 0) {}// с левым краем карты
+					if (Dy > 0) {}//ГЇГ® Y ГўГ­ГЁГ§=>ГЁГ¤ГҐГ¬ Гў ГЇГ®Г«(Г±ГІГ®ГЁГ¬ Г­Г  Г¬ГҐГ±ГІГҐ).
+					if (Dy < 0) {}//Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГҐ Г± ГўГҐГ°ГµГ­ГЁГ¬ГЁ ГЄГ°Г ГїГ¬ГЁ ГЄГ Г°ГІГ»
+					if (Dx > 0) {}//Г± ГЇГ°Г ГўГ»Г¬ ГЄГ°Г ГҐГ¬ ГЄГ Г°ГІГ»
+					if (Dx < 0) {}// Г± Г«ГҐГўГ»Г¬ ГЄГ°Г ГҐГ¬ ГЄГ Г°ГІГ»
 				}
 			}
 	*/
@@ -173,9 +173,9 @@ public:
 		x += dx * time;
 		y += dy * time;
 		sprite.setPosition(Vector2f(sprite.getPosition().x + x, sprite.getPosition().y + y));
-		//checkCollisionWithMap(dx, 0);//обрабатываем столкновение по Х
+		//checkCollisionWithMap(dx, 0);//Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГ¬ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГҐ ГЇГ® Г•
 		
-		//checkCollisionWithMap(0, dy);//обрабатываем столкновение по Y
+		//checkCollisionWithMap(0, dy);//Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГ¬ Г±ГІГ®Г«ГЄГ­Г®ГўГҐГ­ГЁГҐ ГЇГ® Y
 	}
 };
 int main() {
