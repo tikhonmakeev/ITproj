@@ -172,9 +172,8 @@ public:
 		dy = speed * sin(sprite.getRotation());
 		x += dx * time;
 		y += dy * time;
-		sprite.setPosition(Vector2f(sprite.getPosition().x + x, sprite.getPosition().y + y));
 		//checkCollisionWithMap(dx, 0);//îáðàáàòûâàåì ñòîëêíîâåíèå ïî Õ
-		
+		sprite.setPosition(x + w / 12, y + h / 2);
 		//checkCollisionWithMap(0, dy);//îáðàáàòûâàåì ñòîëêíîâåíèå ïî Y
 	}
 };
