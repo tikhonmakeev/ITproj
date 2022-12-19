@@ -195,6 +195,7 @@ int main() {
 		
 		float time = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
+		time = time / 800
 		while (window.pollEvent(event))
 		{
 			if (event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Key::Escape))
