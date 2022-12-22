@@ -168,8 +168,8 @@ public:
 	};
 	void update(float time)
 	{
-		dx = speed * cos(sprite.getRotation());
-		dy = speed * sin(sprite.getRotation());
+		dx = - speed * cos(sprite.getRotation() / 57.2958);
+		dy =  - speed * sin(sprite.getRotation() / 57.2958);
 		x += dx * time;
 		y += dy * time;
 		//checkCollisionWithMap(dx, 0);//îáðàáàòûâàåì ñòîëêíîâåíèå ïî Õ
