@@ -2,10 +2,12 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <list>
 using namespace sf;
 using namespace std;
 class Entity {
 	public:
+		Event event;
 		float dx, dy, x, y, speed, moveTimer;
 		int w, h, health;
 		bool life, isMove, isBurning;
@@ -23,6 +25,7 @@ class Entity {
 };
 class Player :public Entity {
 public:
+	bool isShoot;
 	enum { left, right, up, down, stay } state;//ñîñòîÿíèÿ îáúåêòà
 
 	Player(Image& image, float X, float Y, int W, int H, String Name) :Entity(image, X, Y, W, H, Name) {
@@ -48,6 +51,7 @@ public:
 				state = down; speed = speed;
 			}
 		}
+		
 	}
 
 	void checkCollisionWithMap(float Dx, float Dy)//ô öèÿ ïðîâåðêè ñòîëêíîâåíèé ñ êàðòîé
@@ -182,7 +186,7 @@ public:
 			dy = -1 * speed * sin(sprite.getRotation() / 57.2958);}
 		x += dx * time;
 		y += dy * time;
-		sprite.setRotation((180.f / PI) * atan((mouseposY - fireball.y) / (mouseposX - fireball.x)));
+		//sprite.setRotation((180.f / PI) * atan((mouseposY - fireball.y) / (mouseposX - fireball.x)));
 		//checkCollisionWithMap(dx, 0);//îáðàáàòûâàåì ñòîëêíîâåíèå ïî Õ
 		sprite.setPosition(x , y);
 		//checkCollisionWithMap(0, dy);//îáðàáàòûâàåì ñòîëêíîâåíèå ïî Y
@@ -197,6 +201,9 @@ int main() {
 	Clock clock;
 	Event event;
 	int a = 0;
+	list<Entity*> entities;
+	list<Entity*>::iterator it;
+	list<Entity*>::iterator it2;
 	Vector2i pixelPos = Mouse::getPosition(window);
 	int mouseposX = window.mapPixelToCoords(pixelPos).x;
 	int mouseposY = window.mapPixelToCoords(pixelPos).y;
@@ -211,6 +218,12 @@ int main() {
 		{
 			if (event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Key::Escape))
 				window.close();
+		}
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+    		if (event.mouseButton.button == sf::Mouse::Left){
+				cout<<"tikhon lohich";
+			}
 		}
 		if (event.type == Event::MouseButtonPressed and a== 0) {
 			Vector2i pixelPos = Mouse::getPosition(window);
