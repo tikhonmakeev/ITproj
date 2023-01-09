@@ -123,27 +123,31 @@ public:
 };
 class Spell {
 public:
-	float dx, dy, x, y, speed= 1;
+	float dx, dy, x, y, speed= 10;
 	int w, h;
 	bool isBurning = false;
 	string name;
 	Texture texture;
 	Sprite sprite;
 	float PI = 3.14159265;
-	float angle;
+	int angle;
+	//float angle = Mouse::getPosition(window);
 	Spell(Image& image, float X, float Y, int W, int H, string Name, int mouseposX, int mouseposY) {
 		x = X; y = Y; w = W; h = H; name = Name;
 		dx = 0; dy = 0;
-		int angle = (180.f / PI) * atan((mouseposY - y) / (mouseposX - x));
+		angle = (180.f / PI) * atan((mouseposY - y) / (mouseposX - x));
+		if (mouseposY<y){
+			angle = - angle;
+		}
 		std::cout << angle<<endl;
 		if (name == "fireball") {
 			int dmgpersec = 5;
 			texture.loadFromImage(image);
 			sprite.setPosition(x, y);
 			sprite.setTexture(texture);
-			sprite.setOrigin(w /2, h/2);
-			sprite.scale(0.01f, 0.01f);
-			sprite.setRotation(angle + 180.f);
+			sprite.setOrigin(w /3, h/2);
+			sprite.scale(0.1f, 0.1f);
+			sprite.setRotation(angle);
 		}
 	}
 	void setBurning(string obj, int duration, float time) {
@@ -161,18 +165,24 @@ public:
 					if (Dy > 0) {}//ïî Y âíèç=>èäåì â ïîë(ñòîèì íà ìåñòå).
 					if (Dy < 0) {}//ñòîëêíîâåíèå ñ âåðõíèìè êðàÿìè êàðòû
 					if (Dx > 0) {}//ñ ïðàâûì êðàåì êàðòû
-					if (Dx < 0) {}// ñ ëåâûì êðàåì êàðòû
+					if (Dx < 0) {}//	Bñ ëåâûì êðàåì êàðòû
 				}
 			}
 	*/
 	};
 	void update(float time)
-	{
-		dx = - speed * cos(angle / 57.2958);
-		dy = - speed * sin(angle / 57.2958);
-		sprite.setRotation(angle + 180.f);
+	{	
+		if( angle > 0){
+			dx = speed * cos(sprite.getRotation() / 57.2958);
+			dy = speed * sin(sprite.getRotation() / 57.2958);
+			
+		}
+		else{
+			dx = -1 * speed * cos(sprite.getRotation() / 57.2958);
+			dy = -1 * speed * sin(sprite.getRotation() / 57.2958);}
 		x += dx * time;
 		y += dy * time;
+		sprite.setRotation((180.f / PI) * atan((mouseposY - fireball.y) / (mouseposX - fireball.x)));
 		//checkCollisionWithMap(dx, 0);//îáðàáàòûâàåì ñòîëêíîâåíèå ïî Õ
 		sprite.setPosition(x , y);
 		//checkCollisionWithMap(0, dy);//îáðàáàòûâàåì ñòîëêíîâåíèå ïî Y
@@ -180,7 +190,7 @@ public:
 };
 int main() {
 	Image fireballImage;
-	fireballImage.loadFromFile("ballfire1.png");
+	fireballImage.loadFromFile("/home/pant1k3/Рабочий стол/1/git/ITproj/ballfire1.png");
 	RenderWindow window(VideoMode(600, 600), "magicka", Style::None);
 	//class RenderWindow &win = window;
 	window.setFramerateLimit(60);
@@ -190,13 +200,13 @@ int main() {
 	Vector2i pixelPos = Mouse::getPosition(window);
 	int mouseposX = window.mapPixelToCoords(pixelPos).x;
 	int mouseposY = window.mapPixelToCoords(pixelPos).y;
-	Spell fireball(fireballImage, 300, 300, 3206, 1054, "fireball", mouseposX, mouseposY);
+	Spell fireball(fireballImage, 300, 300, 10000, 10000, "fireball", mouseposX, mouseposY);
 	while (window.isOpen())
 	{
 		
 		float time = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
-		time = time / 10000;
+		time = time / 16000;
 		while (window.pollEvent(event))
 		{
 			if (event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Key::Escape))
@@ -207,8 +217,9 @@ int main() {
 			int mouseposX = window.mapPixelToCoords(pixelPos).x;
 			int mouseposY = window.mapPixelToCoords(pixelPos).y;
 			float PI = 3.14159265;
-			std::cout << ((180.f / PI) * atan((mouseposY - fireball.y) / (mouseposX - fireball.x)))<<endl;
-			fireball.angle = ((180.f / PI) * atan((mouseposY - fireball.y) / (mouseposX - fireball.x)));
+			
+			
+			
 			a = 1;
 		}
 		if (a == 1) {
