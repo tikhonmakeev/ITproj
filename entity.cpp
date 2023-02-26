@@ -1,11 +1,14 @@
+#include "map.h"
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <list>
 using namespace sf;
 using namespace std;
 class Entity {
 	public:
+		Event event;
 		float dx, dy, x, y, speed, moveTimer;
 		int w, h, health;
 		bool life, isMove, isBurning;
@@ -23,6 +26,7 @@ class Entity {
 };
 class Player :public Entity {
 public:
+	bool isShoot;
 	enum { left, right, up, down, stay } state;//ñîñòîÿíèÿ îáúåêòà
 
 	Player(Image& image, float X, float Y, int W, int H, String Name) :Entity(image, X, Y, W, H, Name) {
@@ -96,15 +100,15 @@ public:
 	}
 	void checkCollisionWithMap(float Dx, float Dy)
 	{
-		for (int i = y / 32; i < (y + h) / 32; i++)
-			for (int j = x / 32; j < (x + w) / 32; j++)
+		for (int i = y / 64; i < (y + h) / 64; i++)
+			for (int j = x / 64; j < (x + w) / 64; j++)
 			{//çäåñü ðåàëèçîâàí âðàã, ìåíÿþùèé íàïðàâëåíèå ïîñëå êàñàíèÿ ñòåíû, íàì òàêîå íå î÷ ïîäõîäèò
 				/*if (TileMap[i][j] == '0')//åñëè ýëåìåíò íàø òàéëèê çåìëè, òî
 				{
-					if (Dy > 0) { y = i * 32 - h; }//ïî Y âíèç=>èäåì â ïîë(ñòîèì íà ìåñòå) èëè ïàäàåì. Â ýòîò ìîìåíò íàäî âûòîëêíóòü ïåðñîíàæà è ïîñòàâèòü åãî íà çåìëþ, ïðè ýòîì ãîâîðèì ÷òî ìû íà çåìëå òåì ñàìûì ñíîâà ìîæåì ïðûãàòü
-					if (Dy < 0) { y = i * 32 + 32; }//ñòîëêíîâåíèå ñ âåðõíèìè êðàÿìè êàðòû(ìîæåò è íå ïðèãîäèòüñÿ)
-					if (Dx > 0) { x = j * 32 - w; dx = -0.1; sprite.scale(-1, 1); }//ñ ïðàâûì êðàåì êàðòû
-					if (Dx < 0) { x = j * 32 + 32; dx = 0.1; sprite.scale(-1, 1); }// ñ ëåâûì êðàåì êàðòû
+					if (Dy > 0) { y = i * 64 - h; }//ïî Y âíèç=>èäåì â ïîë(ñòîèì íà ìåñòå) èëè ïàäàåì. Â ýòîò ìîìåíò íàäî âûòîëêíóòü ïåðñîíàæà è ïîñòàâèòü åãî íà çåìëþ, ïðè ýòîì ãîâîðèì ÷òî ìû íà çåìëå òåì ñàìûì ñíîâà ìîæåì ïðûãàòü
+					if (Dy < 0) { y = i * 64 + 64; }//ñòîëêíîâåíèå ñ âåðõíèìè êðàÿìè êàðòû(ìîæåò è íå ïðèãîäèòüñÿ)
+					if (Dx > 0) { x = j * 64 - w; dx = -0.1; sprite.scale(-1, 1); }//ñ ïðàâûì êðàåì êàðòû
+					if (Dx < 0) { x = j * 64 + 64; dx = 0.1; sprite.scale(-1, 1); }// ñ ëåâûì êðàåì êàðòû
 				}
 			}
 		*/
@@ -125,24 +129,27 @@ class Spell {
 public:
 	float dx, dy, x, y, speed= 1;
 	int w, h;
-	bool isBurning = false;
+	bool isBurning = false, toDelete = false;
 	string name;
 	Texture texture;
 	Sprite sprite;
 	float PI = 3.14159265;
-	float angle;
+	int angle;
 	Spell(Image& image, float X, float Y, int W, int H, string Name, int mouseposX, int mouseposY) {
 		x = X; y = Y; w = W; h = H; name = Name;
 		dx = 0; dy = 0;
-		int angle = (180.f / PI) * atan((mouseposY - y) / (mouseposX - x));
+		angle = (180.f / PI) * atan((mouseposY - y) / (mouseposX - x));
+		if (mouseposY < y) {
+			angle = -angle;
+		}
 		std::cout << angle<<endl;
 		if (name == "fireball") {
 			int dmgpersec = 5;
 			texture.loadFromImage(image);
 			sprite.setPosition(x, y);
 			sprite.setTexture(texture);
-			sprite.setOrigin(w /2, h/2);
-			sprite.scale(0.01f, 0.01f);
+			sprite.setOrigin(w /3, h/2);
+			sprite.scale(0.03f, 0.03f);
 			sprite.setRotation(angle + 180.f);
 		}
 	}
@@ -168,54 +175,123 @@ public:
 	};
 	void update(float time)
 	{
-		dx = - speed * cos(angle / 57.2958);
-		dy = - speed * sin(angle / 57.2958);
-		sprite.setRotation(angle + 180.f);
+		if (angle > 0) {
+			dx = speed * cos(sprite.getRotation() / 57.2958);
+			dy = speed * sin(sprite.getRotation() / 57.2958);
+
+		}
+		else {
+			dx = -1 * speed * cos(sprite.getRotation() / 57.2958);
+			dy = -1 * speed * sin(sprite.getRotation() / 57.2958);
+		}
 		x += dx * time;
 		y += dy * time;
+		//sprite.setRotation((180.f / PI) * atan((mouseposY - fireball.y) / (mouseposX - fireball.x)));
 		//checkCollisionWithMap(dx, 0);//îáðàáàòûâàåì ñòîëêíîâåíèå ïî Õ
-		sprite.setPosition(x , y);
+		sprite.setPosition(x, y);
 		//checkCollisionWithMap(0, dy);//îáðàáàòûâàåì ñòîëêíîâåíèå ïî Y
+	}
+	void interactionWithMap()//ф-ция взаимодействия с картой
+	{
+		for (int i = y / 64; i < (y + h) / 64; i++)//проходимся по тайликам, контактирующим с игроком,, то есть по всем квадратикам размера 32*32, которые мы окрашивали в 9 уроке. про условия читайте ниже.
+			for (int j = x / 64; j < (x + w) / 64; j++)//икс делим на 32, тем самым получаем левый квадратик, с которым персонаж соприкасается. (он ведь больше размера 32*32, поэтому может одновременно стоять на нескольких квадратах). А j<(x + w) / 32 - условие ограничения координат по иксу. то есть координата самого правого квадрата, который соприкасается с персонажем. таким образом идем в цикле слева направо по иксу, проходя по от левого квадрата (соприкасающегося с героем), до правого квадрата (соприкасающегося с героем)
+			{
+				if (TileMap[i][j] == '0')//если наш квадратик соответствует символу 0 (стена), то проверяем "направление скорости" персонажа:
+				{
+					toDelete = true;
+				}
+
+				if (TileMap[i][j] == 's') { //если символ равен 's' (камень)
+					x = 300; y = 300;//какое то действие... например телепортация героя
+					TileMap[i][j] = ' ';//убираем камень, типа взяли бонус. можем и не убирать, кстати.
+				}
+			}
 	}
 };
 int main() {
+	Image wizard;
+	wizard.loadFromFile("wizard.png");
+	wizard.createMaskFromColor(Color(0, 0, 0));
+	Texture herotexture;
+	herotexture.loadFromImage(wizard);
+
+	Sprite herosprite;
+	herosprite.setTexture(herotexture);
+	herosprite.setTextureRect(IntRect(0, 0, 160, 90));//первый спрайт
+	herosprite.setPosition(250, 250); //выводим спрайт в позицию x y 
+
 	Image fireballImage;
 	fireballImage.loadFromFile("ballfire1.png");
-	RenderWindow window(VideoMode(600, 600), "magicka", Style::None);
+	int HEIGHT = 800;
+	int WIDTH = 1280;
+	RenderWindow window(VideoMode(WIDTH, HEIGHT), "magicka", Style::None);
 	//class RenderWindow &win = window;
 	window.setFramerateLimit(60);
 	Clock clock;
 	Event event;
 	int a = 0;
+	list<Entity*> entities;
+	list<Entity*>::iterator it;
+	list<Entity*>::iterator it2;
+	Image map_image;//объект изображения для карты
+	map_image.loadFromFile("map2bg.jpg");//загружаем файл для карты
+	//map_image.createMaskFromColor(Color(0, 0, 0));не работает
+	Texture map;//текстура карты
+	map.loadFromImage(map_image);//заряжаем текстуру картинкой
+	Sprite s_map;//создаём спрайт для карты
+	s_map.setTexture(map);//заливаем текстуру спрайтом
 	Vector2i pixelPos = Mouse::getPosition(window);
 	int mouseposX = window.mapPixelToCoords(pixelPos).x;
 	int mouseposY = window.mapPixelToCoords(pixelPos).y;
-	Spell fireball(fireballImage, 300, 300, 3206, 1054, "fireball", mouseposX, mouseposY);
+	Spell fireball(fireballImage, 500, 500, 3206, 1054, "fireball", mouseposX, mouseposY);
 	while (window.isOpen())
 	{
-		
+
 		float time = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
-		time = time / 10000;
+		time = time / 16000;
 		while (window.pollEvent(event))
 		{
 			if (event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Key::Escape))
 				window.close();
 		}
-		if (event.type == Event::MouseButtonPressed and a== 0) {
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			if (event.mouseButton.button == sf::Mouse::Left) {
+				cout << "!!!!!";
+			}
+		}
+		if (event.type == Event::MouseButtonPressed and a == 0) {
 			Vector2i pixelPos = Mouse::getPosition(window);
 			int mouseposX = window.mapPixelToCoords(pixelPos).x;
 			int mouseposY = window.mapPixelToCoords(pixelPos).y;
 			float PI = 3.14159265;
-			std::cout << ((180.f / PI) * atan((mouseposY - fireball.y) / (mouseposX - fireball.x)))<<endl;
-			fireball.angle = ((180.f / PI) * atan((mouseposY - fireball.y) / (mouseposX - fireball.x)));
+
+
 			a = 1;
 		}
 		if (a == 1) {
 			fireball.update(time);
+			
 
 			window.clear();
+			for (int i = 0; i < HEIGHT_MAP; i++)
+				for (int j = 0; j < WIDTH_MAP; j++)
+				{
+					if (TileMap[i][j] == ' ')  s_map.setTextureRect(IntRect(0, 0, 64, 64)); //если встретили символ пробел, то рисуем 1й квадратик
+					if (TileMap[i][j] == 's')  s_map.setTextureRect(IntRect(448, 64, 512, 128));//bricks
+					if ((TileMap[i][j] == 'x')) s_map.setTextureRect(IntRect(448, 192, 512, 256));//brownstone
+					if ((TileMap[i][j] == 't')) s_map.setTextureRect(IntRect(192, 0, 256, 64));//top
+					if ((TileMap[i][j] == 'T')) s_map.setTextureRect(IntRect(64, 0, 128, 64));//Left-top
+					if ((TileMap[i][j] == 'b')) s_map.setTextureRect(IntRect(0, 448, 64, 512));//bot
+					if ((TileMap[i][j] == 'l')) s_map.setTextureRect(IntRect(64, 64, 128, 128));//left
+					if ((TileMap[i][j] == 'L')) s_map.setTextureRect(IntRect(0, 64, 64, 128));//Left-bot
 
+
+					s_map.setPosition(j * 64, i * 64);//по сути раскидывает квадратики, превращая в карту. то есть задает каждому из них позицию. если убрать, то вся карта нарисуется в одном квадрате 32*32 и мы увидим один квадрат
+
+					window.draw(s_map);//рисуем квадратики на экран
+				}
 			window.draw(fireball.sprite);
 			window.display();
 		}
